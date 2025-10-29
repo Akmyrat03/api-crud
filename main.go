@@ -1,10 +1,14 @@
 package main
 
 import (
+	"context"
 	"log"
 
-	"github.com/Akmyrat03/api/crud/internal/api"
 	"github.com/Akmyrat03/api/crud/internal/config"
+	"github.com/Akmyrat03/api/crud/internal/controller"
+	"github.com/Akmyrat03/api/crud/internal/repository"
+	"github.com/Akmyrat03/api/crud/internal/usecase"
+	"github.com/Akmyrat03/api/crud/pkg/connection"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -12,7 +16,20 @@ import (
 func main() {
 	app := fiber.New()
 
-	api.Routes(app)
+	group := app.Group("/api/v1")
+
+	psqlDB, err := connection.NewDBConnection(context.Background(), config)
+	if err != nil {
+		log.Printf("failed connect to db: %v\n", err)
+	}
+
+	bookRepository := repository.NewBookRepository(psqlDB)
+
+	bookUseCase := usecase.NewBookUC(bookRepository)
+
+	bookController := controller.NewBookController(bookUseCase)
+
+	controller.MapBookRoutes(group, *bookController)
 
 	cfg := config.LoadConfig()
 

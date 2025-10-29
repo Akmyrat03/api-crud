@@ -7,11 +7,11 @@ import (
 	"net"
 	"time"
 
+	"github.com/Akmyrat03/api/crud/internal/config"
 	"github.com/georgysavva/scany/v2/pgxscan"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/jumayevgadam/backend_saada_tour/internal/config"
 )
 
 var _ DB = (*Database)(nil)

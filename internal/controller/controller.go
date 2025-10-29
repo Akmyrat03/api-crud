@@ -7,6 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// crud-> create, read, update, delete
+
 type BookController interface {
 	CreateBook(c *fiber.Ctx) error
 }
